@@ -7,6 +7,7 @@ The PhP scripts are responsible for wrapping up the commands sent from the front
 Retrieving data works very similarly. Requests for data such as a user account is sent to the Java application which is then properly forwarded to the database. This data is then returned and then encoded as a json object and sent back through the socket which is read by the PhP script and then forwarded to the site’s frontend. 
 
 ## Instructions
+* Note: All contents for the web application is located in */web_thrive_cloud_cafe*.
 * Download and install a webserver solution such as [**XAMPP**](https://www.apachefriends.org/download.html) to run the web project locally.
 * Make sure to run the latest version of PhP (version 7.2 or higher). Update instructions for XAMPP here: https://www.wpblog.com/update-php-version-in-xampp/
 * Clone the branch into your webserver solution's root or */var/www* equivalent path (*/htdocs* if using XAMPP)
