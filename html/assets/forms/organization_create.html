@@ -1,0 +1,76 @@
+<body>
+<div id="form-ref" style="padding-bottom: 15%">
+    <h1>Register Your Organization</h1>
+    <br>
+    <form>
+        <div class="form-group">
+            <div class="form-group col-md-8">
+                <label for="inputName">Organization Name</label>
+                <input type="text" class="form-control" id="inputName" placeholder="Name">
+                <div id="invalid-name" class="invalid-feedback">
+                    Please enter the name of your organization.
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputAddress">Address</label>
+            <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+            <div id="invalid-addr" class="invalid-feedback">
+                Please enter the street address for your organization.
+            </div>
+        </div>x
+        <div class="form-group row">
+            <div class="form-group col-md-6">
+                <label for="inputCity">City</label>
+                <input type="text" class="form-control" id="inputCity">
+                <div id="invalid-city" class="invalid-feedback">
+                    Please enter the name of the city your organization is in.
+                </div>
+            </div>
+            <div class="form-group col-md-2">
+                <label for="inputZip">Zip</label>
+                <input type="text" class="form-control" id="inputZip">
+                <div id="invalid-zip" class="invalid-feedback">
+                    Please enter a valid zip.
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="form-group col-md-2">
+                <label for="inputCapacity">Storage Capacity</label>
+                <input type="number" min="-1" class="form-control" id="inputCapacity" placeholder="200 lbs">
+                <small id="capacityHelp" class="form-text text-muted">Maximum capacity in lbs. -1 if unsure.</small>
+                <div id="invalid-capacity" class="invalid-feedback">
+                    This is the maximum number of food you can approximately hold at your facility. Enter -1 if unsure.
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="inputTypes">Food Types</label>
+                <select id="inputTypes" class="selectpicker form-control" multiple>
+                    <option value="seafood">Seafood</option>
+                    <option value="poultry">Poultry</option>
+                    <option value="meat">Meat</option>
+                    <option value="fruits">Fruits</option>
+                    <option value="vegetables">Vegetables</option>
+                    <option value="soups">Soups</option>
+                    <option value="salads">Salads</option>
+                    <option value="condiments">Condiments</option>
+                    <option value="dairy">Dairy</option>
+                    <option value="pantry">Pantry</option>
+                </select>
+                <div id="invalid-types" class="invalid-feedback">
+                    Please select all the applicable food groups your organization is capable of distributing or providing.
+                </div>
+            </div>
+            <div class="col-auto my-1" style="padding-top: 2%">
+                <div class="form-check mb-2 mr-sm-2">
+                    <input type="checkbox" class="form-check-input" id="refrigerationCheck">
+                    <label class="form-check-label" for="refrigerationCheck">Refrigeration Available</label>
+                </div>
+            </div>
+        </div>
+        <button id="btn-register" type="button" class="btn btn-primary">Register</button>
+    </form>
+</div>
+
+</body>

@@ -1,0 +1,5 @@
+/java/target/
+/java/.idea/
+/.idea
+/java/src/main/resources/accountKey.json
+/js/firebase_config.js
