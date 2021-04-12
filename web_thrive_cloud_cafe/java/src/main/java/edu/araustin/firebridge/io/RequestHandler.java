@@ -6,6 +6,7 @@ import edu.araustin.firebridge.FireRunner;
 import edu.araustin.firebridge.commands.CommandManager;
 import edu.araustin.firebridge.packets.CommandPacket;
 import edu.araustin.firebridge.packets.OrganizationPacket;
+import edu.araustin.firebridge.packets.SessionPacket;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,14 +23,24 @@ public class RequestHandler {
         this.communicator = BridgeIO.open((communicator, input) -> {
             if (input instanceof CommandPacket) {
                 handleCommand((CommandPacket) input);
+            } else if (input instanceof SessionPacket) {
+                handleSessionRequest();
             } else if (input instanceof OrganizationPacket) {
                 handleOrganization((OrganizationPacket) input);
             }
         });
     }
 
+    private void handleSessionRequest() {
+        SessionProfile profile = communicator.getCurrentSession();
+        if (profile.getUID() != null)
+            communicator.sendData(FireRunner.getBridge().getDocument("users", profile.getUID()).getData());
+        communicator.closeConnection();
+    }
+
     private void handleOrganization(OrganizationPacket packet) {
         System.out.println("#handleOrganization");
+        FireRunner.getBridge().updateFields("users", communicator.getCurrentSession().getUID(), new Pair<>("organization", "\\0"));
         FireRunner.getBridge().setValue("pending organizations", packet.getOrganizationName(), packet);
         communicator.closeConnection();
     }

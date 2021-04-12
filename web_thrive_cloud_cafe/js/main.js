@@ -48,7 +48,7 @@ page_tabs["database.html"] = "Database"
 
 let src = window.location.pathname.split("/").pop();
 if(!session_whitelist.includes(src)) {
-    php.session(["user_id"], function(data) {
+    php.session(["user_id"], false, true, function(data) {
         if(data["user_id"] == null) {
             // user not logged in
             window.location.replace("index.html");

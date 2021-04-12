@@ -31,7 +31,7 @@ if (array_key_exists("prep", $_POST)) {
         $packet = new OrganizationPacket($_POST["name"], $_SESSION["user_id"], $_POST["address"], $_POST["city"], $_POST["zip"], $_POST["capacity"], $_POST["types"], $_POST["refrigeration"]);
         $driver->send($packet);
 
-        $_SESSION["organization"] = "pending"; // this is only temporary (for demonstration purposes) 
+        $_SESSION["organization"] = "\0"; // this is only temporary (for demonstration purposes)
 
         $out = $driver->waitForResponse();
         if ($out == null) {

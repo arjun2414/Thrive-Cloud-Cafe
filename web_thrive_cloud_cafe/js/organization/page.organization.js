@@ -3,7 +3,7 @@ import {page} from "../main.js";
 $(".alert-warning").hide();
 
 page.ready(function (page) {
-    page.php.session(["organization"], function (data) {
+    page.php.session(["organization"], false, true, function (data) {
         console.log(data);
         if (data["organization"] == null) {
             // no organization
@@ -73,7 +73,7 @@ page.ready(function (page) {
                 page.stopLoadingAnimation();
                 alert("You are not part of an organization. Register one or contact the support team.")
             });
-        } else if(data["organization"] === "pending") {
+        } else if(data["organization"] === "\\0") {
             $(".alert-warning").show();
         } else {
             $(".organization-form").load("html/assets/forms/organization_info.html #form-ref", function () {

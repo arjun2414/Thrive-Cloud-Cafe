@@ -6,4 +6,6 @@ public interface Communicator {
 
     void closeConnection();
 
+    SessionProfile getCurrentSession();
+
 }

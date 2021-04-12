@@ -2,7 +2,13 @@
 
 namespace FirebridgeSocketDriver;
 
+require_once "packets/clas.handshakepacket.php";
+require_once "packets/clas.closepacket.php";
+
 // prevent timeout
+use HandshakePacket\HandshakePacket;
+use ClosePacket\ClosePacket;
+
 set_time_limit(0);
 
 ob_implicit_flush();
@@ -25,6 +31,8 @@ class FirebridgeSocketDriver
         if(socket_connect($this->socket, FirebridgeSocketDriver::$ADDRESS, FirebridgeSocketDriver::$PORT) === false) {
             echo "socket_connect() failed: reason: " . socket_strerror(socket_last_error()) . "\n";
         }
+
+        $this->send(new HandshakePacket());
     }
 
 
@@ -34,7 +42,7 @@ class FirebridgeSocketDriver
     }
 
     function close() {
-        $this->send("\q");
+        $this->send(new ClosePacket(false));
         socket_shutdown($this->socket, 2);
         socket_close($this->socket);
     }
@@ -62,7 +70,7 @@ class FirebridgeSocketDriver
 
             return $buf;
         }
-        return "";
+        return json_encode(null);
     }
 
     function waitForResponse() {

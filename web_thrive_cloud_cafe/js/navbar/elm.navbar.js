@@ -1,25 +1,30 @@
-import { php } from "../util.ajax.js";
+import {php} from "../util.ajax.js";
 
 class _navbar {
     update() {
         navbar_update();
     }
+
     addTab(tab) {
         addTab(tab);
     }
+
     setCurrentTab(name) {
-        if(!Object.values(tabs).includes(name.toLowerCase()))
+        if (!Object.values(tabs).includes(name.toLowerCase()))
             addTab(name);
         setCurrentTab(name.toLowerCase());
     }
+
     logout() {
         navbar_logout();
     }
+
     fadeIn(delay) {
         let div = $("#nav-ref");
         div.hide();
         div.fadeIn(delay);
     }
+
     fadeOut(delay) {
         $("#nav-ref").fadeOut(delay);
     }
@@ -40,6 +45,12 @@ export let tabs = {
 
 export let nav_element = new _element();
 
+var timer = null;
+var organization = null;
+var displayname = null;
+var pending_organization = false;
+
+
 function init() {
     $(".main-navbar").load("html/assets/navbar.html .ref", function () {
         $("#logout").click(function () {
@@ -51,26 +62,44 @@ function init() {
         navbar.fadeIn(150);
         navbar.update();
 
-        if(nav_element.func !== null) {
+        if (nav_element.func !== null) {
             nav_element.func(navbar);
         }
+
+        timer = setInterval(navbar_update, 15000);
     });
 }
 
+
 function navbar_update() {
-    php.session(["displayname", "organization"], function(data) {
-        if(data["displayname"] == null)
-            return;
-        $("#navbarDropdown").html(data["displayname"] + " ");
-        if(data["organization"]) {
-            if(data["organization"] !== "pending") {
-                $("#drop-organization").html(data["organization"]);
+    if (organization == null) {
+        php.session(["organization"], true, false, function (data) {
+            if (data["organization"]) {
+                if (data["organization"] === "\\0") {
+                    pending_organization = true;
+                    return;
+                }
+                organization = data["organization"];
+                $("#drop-organization").html(organization);
+                if(pending_organization) {
+                    alert("Your organization has been approved.");
+                    pending_organization = false;
+                }
             }
-        }
-        $("#nav-account").show();
-        $("#nav-login").hide();
-        $("#panelModal").modal('hide');
-    });
+        });
+    }
+    if (displayname == null) {
+        php.session(["displayname"], false, false, function (data) {
+            if (data["displayname"] == null)
+                return;
+            displayname = data["displayname"];
+            $("#navbarDropdown").html(displayname + " ");
+
+            $("#nav-account").show();
+            $("#nav-login").hide();
+            $("#panelModal").modal('hide');
+        });
+    }
 }
 
 function addTab(tab) {
@@ -91,7 +120,9 @@ function setCurrentTab(tab) {
 }
 
 function navbar_logout() {
-    php.logout(function(data) {
+    php.logout(function (data) {
         window.location.replace("index.html");
     })
+    if (timer)
+        clearInterval(timer);
 }
