@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:thrive_cloud_cafe/components/loading.dart';
 import 'package:thrive_cloud_cafe/components/organization_tile.dart';
 import 'package:thrive_cloud_cafe/models/user_profile.dart';
+import 'package:thrive_cloud_cafe/screens/home/current_status.dart';
 import 'package:thrive_cloud_cafe/screens/home/organization_list.dart';
 
 import 'package:thrive_cloud_cafe/services/auth.dart';
@@ -24,7 +26,9 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    // The current user accessing the app.
     final user = Provider.of<User>(context);
+
     return StreamBuilder<UserProfile>(
         stream: Database_Service(uid: user.uid).userProfile,
         builder: (context, snapshot) {
@@ -48,21 +52,27 @@ class _HomeState extends State<Home> {
                       title: Text('Periodic Reports'),
                       onTap: () => {
                         Toast.show("Periodic Reports", context,
-                            duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM)
+                            duration: Toast.LENGTH_SHORT,
+                            gravity: Toast.BOTTOM),
+//                        Navigator.push(context, route)
                       },
                     ),
                     ListTile(
                       title: Text('Today\'s status'),
                       onTap: () => {
                         Toast.show("Today\'s status", context,
-                            duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM)
+                            duration: Toast.LENGTH_SHORT,
+                            gravity: Toast.BOTTOM),
+                        Navigator.pushNamed(context, '/status')
                       },
                     ),
                     ListTile(
                       title: Text('Fund Requests'),
                       onTap: () => {
                         Toast.show("Fund Requests", context,
-                            duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM)
+                            duration: Toast.LENGTH_SHORT,
+                            gravity: Toast.BOTTOM),
+                        Navigator.pushNamed(context, '/funds')
                       },
                     ),
                     ListTile(
@@ -78,7 +88,8 @@ class _HomeState extends State<Home> {
               body: OrganizationList(),
             );
           } else {
-            return Text("Loading");
+            //TODO: Loading Page
+            return Loading();
           }
         });
   }

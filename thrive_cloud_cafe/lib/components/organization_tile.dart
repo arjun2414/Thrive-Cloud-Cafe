@@ -31,7 +31,14 @@ class OrganizationTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Map<String, int> foodTypes = orgProfile.getFoodTypes();
+    Map<String, int> foodTypes = orgProfile.getFoodTypes1();
+    int size = foodTypes.isNotEmpty ? foodTypes.length : 0;
+//    foodTypes.forEach((foodType, foodItem) {
+//      foodItem.forEach((key, value) {
+//        size += 1;
+//      });
+//    });
+
     return Padding(
         padding: const EdgeInsets.all(8.0),
         child: ExpansionTileCard(
@@ -55,7 +62,7 @@ class OrganizationTile extends StatelessWidget {
               children: <Widget>[
                 Text('${orgProfile.getDisplayName()}'),
                 SizedBox(
-                  width: 5,
+                  width: 20,
                 ),
                 Icon(
                   Icons.food_bank_outlined,
@@ -65,7 +72,7 @@ class OrganizationTile extends StatelessWidget {
                   width: 5,
                 ),
                 Text(
-                    '${orgProfile.getStorageStatus()}/${orgProfile.getStorageSpace()}'),
+                    '${orgProfile.getStorageStatus()} / ${orgProfile.getStorageSpace()} units'),
               ],
             ),
             children: <Widget>[
@@ -88,18 +95,17 @@ class OrganizationTile extends StatelessWidget {
                 ],
               ),
               Container(
-                height: 55.0 * foodTypes.length,
-                child: new ListView.builder(
-                    itemCount: foodTypes.length,
-                    itemBuilder: (context, index) {
-                      String key = foodTypes.keys.elementAt(index);
-                      print('This is the key: $key');
-                      return FoodRow(
-                        foodName: key,
-                        foodQuantity: foodTypes[key],
-                      );
-                    }),
-              ),
+                  height: 55.0 * size,
+                  child: new ListView.builder(
+                      itemCount: size,
+                      itemBuilder: (context, index) {
+                        dynamic foodType = foodTypes.keys.elementAt(index);
+                        print('This is the key: $foodType');
+                        return FoodRow(
+                          foodName: foodType,
+                          foodQuantity: foodTypes[foodType],
+                        );
+                      })),
             ]
 
 //            <Widget>[

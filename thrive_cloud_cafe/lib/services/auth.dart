@@ -59,15 +59,14 @@ class AuthService {
         uid: user.uid,
       );
 
-      Map<String, int> foodTypesMap = {};
+      Map<String, Map<String, int>> foodTypesMap = {};
       if (foodTypes != null) {
-        foodTypes.forEach((foodType) => foodTypesMap[foodType] = 0);
+        foodTypes.forEach((foodType) => foodTypesMap[foodType] = {});
       }
 
-      OrganizationProfile organizationProfile = OrganizationProfile(
-          displayName: name,
-          storageSpace: storageSpace,
-          foodTypes: foodTypesMap);
+      // Field for foodItems removed.
+      OrganizationProfile organizationProfile =
+          OrganizationProfile(displayName: name, storageSpace: storageSpace);
 
       await Database_Service(uid: user.uid)
           .addUserData(userProfile, organizationProfile);

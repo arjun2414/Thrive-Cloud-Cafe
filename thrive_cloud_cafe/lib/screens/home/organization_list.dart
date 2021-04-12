@@ -16,13 +16,6 @@ class _OrganizationListState extends State<OrganizationList> {
     return StreamBuilder<List<OrganizationProfile>>(
         stream: Database_Service().organizationProfiles,
         builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            print(snapshot.error);
-            return Text('Database snapshot has error');
-          }
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text('Loading');
-          }
           if (snapshot.hasData) {
             final organization = snapshot.data;
             print(
@@ -34,7 +27,17 @@ class _OrganizationListState extends State<OrganizationList> {
               },
             );
           }
-          return Text('Loading');
+
+          if (snapshot.hasError) {
+            print(snapshot.error);
+            return Text('Organization List: Database snapshot has error');
+          }
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Text('Organization List: Loading');
+          }
+
+          return Text('Organization List: Loading');
         });
   }
 }

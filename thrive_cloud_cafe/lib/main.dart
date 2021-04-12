@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:thrive_cloud_cafe/screens/wrapper.dart';
 import 'package:thrive_cloud_cafe/theme.dart';
 
+import 'components/loading.dart';
 import 'services/auth.dart';
 
 void main() {
@@ -21,7 +22,6 @@ class App extends StatelessWidget {
   //  how this can be achieved with a FutureBuilder or a StatefulWidget:
   @override
   Widget build(BuildContext context) {
-
     return FutureBuilder(
         // Initialize FlutterFire:
         future: _initialization,
@@ -39,12 +39,13 @@ class App extends StatelessWidget {
               value: AuthService().user,
               child: MaterialApp(
                 title: 'Thrive Cloud Cafe',
-                theme: theme(),
+                theme: CustomTheme.originalTheme,
                 home: Wrapper(),
               ),
             );
           }
-          return Text('Loading', textDirection: TextDirection.ltr);
+          // return Text('Loading', textDirection: TextDirection.ltr);
+          return Loading();
         });
   }
 }

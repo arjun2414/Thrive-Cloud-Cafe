@@ -23,17 +23,31 @@ class Database_Service {
         email: snapshot.get("email"));
   }
 
+  // Converting the DocumentSnapshot ( snapshot of the document)
+  // to an organization profile.
+  OrganizationProfile _organizationFromSnapShot(DocumentSnapshot snapshot) {
+    return OrganizationProfile.fromJson(snapshot.data());
+//        displayName: snapshot.get('displayName'),
+//        storageSpace: snapshot.get('storageSpace'),
+//        overflowStatus: snapshot.get('overflowStatus'),
+//        storageStatus: snapshot.get('storageStatus'),
+//        foodTypes: (snapshot.get('foodTypes') as Map<String, Map<String, int>>),
+//        clientsServed: snapshot.get('clientsServed'));
+  }
+
   // Converting the QuerySnapshot ( snapshot of the entire Collection)
   // to a list of organization profiles.
-  List<OrganizationProfile> _organizationFromSnapshot(QuerySnapshot snapshot) {
+  List<OrganizationProfile> _organizationListFromSnapshot(
+      QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
-      return OrganizationProfile(
-          displayName: doc.get('displayName'),
-          storageSpace: doc.get('storageSpace'),
-          overflowStatus: doc.get('overflowStatus'),
-          storageStatus: doc.get('storageStatus'),
-          foodTypes: doc.get('foodTypes').cast<String, int>(),
-          clientsServed: doc.get('clientsServed'));
+//      print(doc.get('foodTypes').toString());
+      return OrganizationProfile.fromJson(doc.data());
+//          displayName: doc.get('displayName'),
+//          storageSpace: doc.get('storageSpace'),
+//          overflowStatus: doc.get('overflowStatus'),
+//          storageStatus: doc.get('storageStatus'),
+//          foodTypes: doc.get('foodTypes'),
+//          clientsServed: doc.get('clientsServed'));
     }).toList();
   }
 
@@ -46,6 +60,12 @@ class Database_Service {
         .set(organizationProfile.toJson());
   }
 
+  Future addOrganizationData(OrganizationProfile organizationProfile) async {
+    return await organizationCollection
+        .doc(uid)
+        .set(organizationProfile.toJson());
+  }
+
   // Creates a stream for accessing the user data for a unique uid.
   Stream<UserProfile> get userProfile {
     return userCollection.doc(uid).snapshots().map((_userProfileFromSnapshot));
@@ -53,6 +73,16 @@ class Database_Service {
 
   // Creates a stream for accessing the various organization profiles.
   Stream<List<OrganizationProfile>> get organizationProfiles {
-    return organizationCollection.snapshots().map((_organizationFromSnapshot));
+    return organizationCollection
+        .snapshots()
+        .map((_organizationListFromSnapshot));
+  }
+
+  // Creates a stream for accessing the organization data for a unique uid.
+  Stream<OrganizationProfile> get organizationProfile {
+    return organizationCollection
+        .doc(uid)
+        .snapshots()
+        .map((_organizationFromSnapShot));
   }
 }
